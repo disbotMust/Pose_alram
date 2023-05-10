@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     private var missingCounter = 0
 
     /** 定义一个历史姿态寄存器 */
-    private var poseRegister = "standard"
+    private var poseRegister = "sleeping"
 
     /** 设置一个用来显示 Debug 信息的 TextView */
     private lateinit var tvDebug: TextView
@@ -190,12 +190,17 @@ class MainActivity : AppCompatActivity() {
                         ) {
                             tvScore.text = getString(R.string.tfe_pe_tv_score, personScore ?: 0f)
 
+
                             /** 分析目标姿态，给出提示 */
                             if (poseLabels != null && personScore != null && personScore > 0.3) {
                                 missingCounter = 0
                                 val sortedLabels = poseLabels.sortedByDescending { it.second }
-                                when (sortedLabels[0].first) {
-                                    "forwardhead" -> {
+                                /** 修正姿勢命名名稱 **/
+                                val input = sortedLabels[0].first
+                                val fixSortedLabels = input.substringAfter("-", input)
+
+                                when (fixSortedLabels) {
+                                    "sitOnTheBed" -> {
                                         crosslegCounter = 0
                                         standardCounter = 0
                                         if (poseRegister == "forwardhead") {
@@ -220,9 +225,10 @@ class MainActivity : AppCompatActivity() {
                                         }
 
                                         /** 显示 Debug 信息 */
-                                        tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $forwardheadCounter")
+                                        /*tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $forwardheadCounter")*/
+                                        tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${fixSortedLabels} $forwardheadCounter")
                                     }
-                                    "crossleg" -> {
+                                    "sitOnThebedSide" -> {
                                         forwardheadCounter = 0
                                         standardCounter = 0
                                         if (poseRegister == "crossleg") {
@@ -246,15 +252,16 @@ class MainActivity : AppCompatActivity() {
                                         }
 
                                         /** 显示 Debug 信息 */
-                                        tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $crosslegCounter")
+                                        /*tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $crosslegCounter")*/
+                                        tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${fixSortedLabels} $crosslegCounter")
                                     }
                                     else -> {
                                         forwardheadCounter = 0
                                         crosslegCounter = 0
-                                        if (poseRegister == "standard") {
+                                        if (poseRegister == "stand") {
                                             standardCounter++
                                         }
-                                        poseRegister = "standard"
+                                        poseRegister = "stand"
 
                                         /** 显示当前坐姿状态：标准 */
                                         if (standardCounter > 30) {
@@ -271,16 +278,21 @@ class MainActivity : AppCompatActivity() {
                                         }
 
                                         /** 显示 Debug 信息 */
-                                        tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $standardCounter")
+                                        /*tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $standardCounter")*/
+                                        tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${fixSortedLabels} $standardCounter")
                                     }
                                 }
 
 
                             }
                             else {
-                                missingCounter++
-                                if (missingCounter > 30) {
-                                    ivStatus.setImageResource(R.drawable.no_target)
+                                if (poseRegister == "sleeping")
+                                    tvDebug.text = getString(R.string.tfe_pe_tv_debug, "還在睡 沒動靜 $missingCounter")
+                                else {
+                                    missingCounter++
+                                    if (missingCounter > 30) {
+                                        ivStatus.setImageResource(R.drawable.no_target)
+                                    }
                                 }
 
                                 /** 显示 Debug 信息 */
