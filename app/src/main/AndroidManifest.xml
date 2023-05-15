@@ -19,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.unique.simplealarmclock.activities.MainActivity">
+            <!-- 在此處添加任何intent-filter（如果需要） -->
+        </activity>
     </application>
 
 </manifest>
