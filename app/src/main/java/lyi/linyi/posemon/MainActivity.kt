@@ -25,7 +25,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Process
 import android.view.SurfaceView
@@ -45,6 +44,7 @@ import lyi.linyi.posemon.data.Camera
 import lyi.linyi.posemon.ml.ModelType
 import lyi.linyi.posemon.ml.MoveNet
 import lyi.linyi.posemon.ml.PoseClassifier
+import android.app.Activity
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -72,10 +72,8 @@ class MainActivity : AppCompatActivity() {
     /** 设置一个用来显示 Debug 信息的 TextView */
     private lateinit var tvDebug: TextView
 
-    /** 註解化，本專案用不到
-     * 设置一个用来显示当前坐姿状态的 ImageView
+    /** 设置一个用来显示当前坐姿状态的 ImageView */
     private lateinit var ivStatus: ImageView
-    */
 
     private lateinit var tvFPS: TextView
     private lateinit var tvScore: TextView
@@ -224,6 +222,7 @@ class MainActivity : AppCompatActivity() {
 
                                         /** 显示当前坐姿状态：坐在床上 */
                                         if (forwardheadCounter > 60) {
+                                            returnToAlarmClock()
 
 
                                             /** 移除 本專案用不到
@@ -257,6 +256,7 @@ class MainActivity : AppCompatActivity() {
 
                                         /** 显示当前坐姿状态：坐在床側 */
                                         if (crosslegCounter > 60) {
+                                            returnToAlarmClock()
 
                                             /** 移除 本專案用不到
                                              * 播放提示音
@@ -287,6 +287,7 @@ class MainActivity : AppCompatActivity() {
 
                                         /** 显示当前坐姿状态：站立 */
                                         if (standardCounter > 30) {
+                                            returnToAlarmClock()
 
                                             /** 移除 本專案用不到
                                              * 播放提示音：坐姿标准
@@ -312,16 +313,20 @@ class MainActivity : AppCompatActivity() {
                             }
                             else {
                                 if (poseRegister == "sleeping")
+
                                 /** 显示 Debug 信息 */
                                     tvDebug.text = getString(R.string.tfe_pe_tv_debug, "還在睡 沒動靜")
                                 else {
                                     missingCounter++
                                     if (missingCounter > 30) {
+
                                         /** 移除 本專案用不到
                                         ivStatus.setImageResource(R.drawable.no_target)*/
                                     }
+
                                     /** 显示 Debug 信息 */
                                     tvDebug.text = getString(R.string.tfe_pe_tv_debug, "missing $missingCounter")
+
                                 }
 
 
@@ -438,8 +443,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**以下 by 柏樺 */
+    @Suppress("DEPRECATION")
+    private fun returnToAlarmClock() {
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
 
-
-
-
+    /** 還有第225 259 290行 */
 }

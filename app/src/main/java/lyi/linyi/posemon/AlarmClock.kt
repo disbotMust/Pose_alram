@@ -13,8 +13,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.*
+import android.app.Activity
 
 class AlarmClock : AppCompatActivity() {
+    companion object {
+        private const val REQUEST_NEW_ACTIVITY = 1
+    }
     private lateinit var textViewAlarmTime: TextView
     private lateinit var buttonSetAlarm: Button
     private lateinit var buttonTurnOffAlarm: Button
@@ -32,7 +36,7 @@ class AlarmClock : AppCompatActivity() {
         buttonSetAlarm = findViewById(R.id.buttonSetAlarm)
         buttonTurnOffAlarm = findViewById(R.id.buttonTurnOffAlarm)
         // 注册姿势变化监听器
-        registerPoseChangeListener()
+
 
         buttonSetAlarm.setOnClickListener {
             showTimePickerDialog()
@@ -72,22 +76,7 @@ class AlarmClock : AppCompatActivity() {
             false
         ).show()
     }
-    private fun registerPoseChangeListener() {
-        PoseManager.registerPoseChangeListener(object : PoseChangeListener() {
-            override fun onPoseChanged(pose: String) {
-                poseRegister = pose
-                handlePoseChange()
-            }
 
-            private fun handlePoseChange() {
-                if (poseRegister == "stand") {
-                    turnOffAlarm()
-                } else {
-                    startAlarm()
-                }
-            }
-        })
-    }
     private fun startAlarm() {
         if (!isAlarmActive) {
             isAlarmActive = true
@@ -138,8 +127,18 @@ class AlarmClock : AppCompatActivity() {
         }
     }
 
+    /** 以下 by 柏樺 */
+    @Suppress("DEPRECATION")
     private fun main() {
         val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_NEW_ACTIVITY)
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_NEW_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            turnOffAlarm()
+        }
     }
 }
