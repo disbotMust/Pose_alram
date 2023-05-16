@@ -1,7 +1,13 @@
 package lyi.linyi.posemon
 
+<<<<<<< HEAD
 
 import android.app.TimePickerDialog
+=======
+import android.app.AlertDialog
+import android.app.TimePickerDialog
+import android.content.Context
+>>>>>>> 95fab0a12e2b105530e26b3f4e51ac378989fa29
 import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
@@ -18,21 +24,33 @@ class AlarmClock : AppCompatActivity() {
     private lateinit var textViewAlarmTime: TextView
     private lateinit var buttonSetAlarm: Button
     private lateinit var buttonTurnOffAlarm: Button
+<<<<<<< HEAD
     lateinit var alarmRingtone: Ringtone
     private var alarmTime: Date? = null
     private var isAlarmActive: Boolean = false
     private var poseRegister: String = ""
+=======
+    private lateinit var alarmRingtone: Ringtone
+    private var alarmTime: Date? = null
+    private var isAlarmActive: Boolean = false
+>>>>>>> 95fab0a12e2b105530e26b3f4e51ac378989fa29
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.alarmclock)
 
+<<<<<<< HEAD
 
         textViewAlarmTime = findViewById(R.id.textViewAlarmTime)
         buttonSetAlarm = findViewById(R.id.buttonSetAlarm)
         buttonTurnOffAlarm = findViewById(R.id.buttonTurnOffAlarm)
         // 注册姿势变化监听器
         registerPoseChangeListener()
+=======
+        textViewAlarmTime = findViewById(R.id.textViewAlarmTime)
+        buttonSetAlarm = findViewById(R.id.buttonSetAlarm)
+        buttonTurnOffAlarm = findViewById(R.id.buttonTurnOffAlarm)
+>>>>>>> 95fab0a12e2b105530e26b3f4e51ac378989fa29
 
         buttonSetAlarm.setOnClickListener {
             showTimePickerDialog()
@@ -60,7 +78,11 @@ class AlarmClock : AppCompatActivity() {
                 alarmTime = calendar.time
 
                 val alarmTimeFormatted =
+<<<<<<< HEAD
                     SimpleDateFormat("hh:mm a", Locale.getDefault()).format(alarmTime!!)
+=======
+                    SimpleDateFormat("hh:mm a", Locale.getDefault()).format(alarmTime)
+>>>>>>> 95fab0a12e2b105530e26b3f4e51ac378989fa29
                 textViewAlarmTime.text = alarmTimeFormatted
 
                 buttonSetAlarm.visibility = View.GONE
@@ -72,6 +94,7 @@ class AlarmClock : AppCompatActivity() {
             false
         ).show()
     }
+<<<<<<< HEAD
     private fun registerPoseChangeListener() {
         PoseManager.registerPoseChangeListener(object : PoseChangeListener() {
             override fun onPoseChanged(pose: String) {
@@ -88,12 +111,16 @@ class AlarmClock : AppCompatActivity() {
             }
         })
     }
+=======
+
+>>>>>>> 95fab0a12e2b105530e26b3f4e51ac378989fa29
     private fun startAlarm() {
         if (!isAlarmActive) {
             isAlarmActive = true
             val currentTime = Calendar.getInstance().time
             val timeDifference = alarmTime?.time?.minus(currentTime.time) ?: 0
 
+<<<<<<< HEAD
             startCountdownTimer(timeDifference)
         }
     }
@@ -119,6 +146,19 @@ class AlarmClock : AppCompatActivity() {
 
 
     fun playAlarmSound() {
+=======
+            object : CountDownTimer(timeDifference, 1000) {
+                override fun onTick(millisUntilFinished: Long) {}
+
+                override fun onFinish() {
+                    playAlarmSound()
+                }
+            }.start()
+        }
+    }
+
+    private fun playAlarmSound() {
+>>>>>>> 95fab0a12e2b105530e26b3f4e51ac378989fa29
         try {
             val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             alarmRingtone = RingtoneManager.getRingtone(applicationContext, notification)
@@ -128,8 +168,16 @@ class AlarmClock : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+<<<<<<< HEAD
     fun turnOffAlarm() {
         if (isAlarmActive && poseRegister != "stand") {
+=======
+
+
+
+    private fun turnOffAlarm() {
+        if (isAlarmActive) {
+>>>>>>> 95fab0a12e2b105530e26b3f4e51ac378989fa29
             isAlarmActive = false
             alarmRingtone.stop()
             textViewAlarmTime.text = ""
