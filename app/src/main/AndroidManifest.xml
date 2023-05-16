@@ -13,15 +13,26 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.PoseEstimation">
-        <activity android:name="lyi.linyi.posemon.MainActivity">
+
+        <activity
+            android:name="lyi.linyi.posemon.AlarmClock"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.unique.simplealarmclock.activities.MainActivity">
-            <!-- 在此處添加任何intent-filter（如果需要） -->
+
+
+        <activity
+            android:name="lyi.linyi.posemon.MainActivity"
+            android:exported="true">
+
         </activity>
+
+
+
+
     </application>
 
 </manifest>

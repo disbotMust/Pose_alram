@@ -10,26 +10,14 @@
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#66000000"/>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="鬧鐘設定"
-        app:layout_anchor="@+id/toolbar"
-        app:layout_anchorGravity="center" />
+        android:layout_height="match_parent"
+        android:exported="true"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:exported="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_sheet"
@@ -37,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="0dp"
-            android:background="@drawable/card_background">
+            android:background="@drawable/card_background"
+            android:exported="true">
 
             <TextView
                 android:id="@+id/tvFps"
@@ -48,9 +37,11 @@
                 android:layout_marginBottom="21dp"
                 app:layout_constraintBottom_toTopOf="@+id/tvDebug"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintVertical_chainStyle="packed"
+                android:exported="true"/>
 
             <TextView
                 android:id="@+id/tvScore"
@@ -59,7 +50,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvFps" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFps"
+                android:exported="true"/>
 
             <TextView
                 android:id="@+id/tvDebug"
@@ -69,7 +61,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/tvDevice"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFps" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFps"
+                android:exported="true"/>
 
             <TextView
                 android:id="@+id/tvDevice"
@@ -80,7 +73,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/tvModel"
                 app:layout_constraintEnd_toStartOf="@+id/spnDevice"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDebug" />
+                app:layout_constraintTop_toBottomOf="@+id/tvDebug"
+                android:exported="true"/>
 
             <Spinner
                 android:id="@+id/spnDevice"
@@ -99,7 +93,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/tvModel"
                 app:layout_constraintEnd_toStartOf="@+id/spnCamera"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDevice" />
+                app:layout_constraintTop_toBottomOf="@+id/tvDevice"
+                android:exported="true"/>
 
             <Spinner
                 android:id="@+id/spnCamera"
@@ -107,7 +102,8 @@
                 android:layout_height="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvCamera"
-                app:layout_constraintTop_toBottomOf="@+id/spnDevice" />
+                app:layout_constraintTop_toBottomOf="@+id/spnDevice"
+                android:exported="true"/>
 
             <TextView
                 android:id="@+id/tvModel"
@@ -118,9 +114,9 @@
                 android:text="@string/tfe_pe_tv_model"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCamera" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCamera"
+                android:exported="true"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
