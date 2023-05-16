@@ -21,6 +21,7 @@ class AlarmClock : AppCompatActivity() {
     lateinit var alarmRingtone: Ringtone
     private var alarmTime: Date? = null
     private var isAlarmActive: Boolean = false
+    private var poseRegister: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,8 @@ class AlarmClock : AppCompatActivity() {
         textViewAlarmTime = findViewById(R.id.textViewAlarmTime)
         buttonSetAlarm = findViewById(R.id.buttonSetAlarm)
         buttonTurnOffAlarm = findViewById(R.id.buttonTurnOffAlarm)
+        // 注册姿势变化监听器
+        registerPoseChangeListener()
 
         buttonSetAlarm.setOnClickListener {
             showTimePickerDialog()
@@ -69,22 +72,51 @@ class AlarmClock : AppCompatActivity() {
             false
         ).show()
     }
+    private fun registerPoseChangeListener() {
+        PoseManager.registerPoseChangeListener(object : PoseChangeListener() {
+            override fun onPoseChanged(pose: String) {
+                poseRegister = pose
+                handlePoseChange()
+            }
 
+            private fun handlePoseChange() {
+                if (poseRegister == "stand") {
+                    turnOffAlarm()
+                } else {
+                    startAlarm()
+                }
+            }
+        })
+    }
     private fun startAlarm() {
         if (!isAlarmActive) {
             isAlarmActive = true
             val currentTime = Calendar.getInstance().time
             val timeDifference = alarmTime?.time?.minus(currentTime.time) ?: 0
 
-            object : CountDownTimer(timeDifference, 1000) {
-                override fun onTick(millisUntilFinished: Long) {}
-
-                override fun onFinish() {
-                    playAlarmSound()
-                }
-            }.start()
+            startCountdownTimer(timeDifference)
         }
     }
+
+    private fun startCountdownTimer(timeDifference: Long) {
+        object : CountDownTimer(timeDifference, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // Check pose register and stop alarm if pose is "stand"
+                if (poseRegister == "stand") {
+                    turnOffAlarm()
+                    cancel()
+                }
+            }
+
+            override fun onFinish() {
+                // Check pose register and play alarm sound if pose is not "stand"
+                if (poseRegister != "stand") {
+                    playAlarmSound()
+                }
+            }
+        }.start()
+    }
+
 
     fun playAlarmSound() {
         try {
@@ -96,11 +128,8 @@ class AlarmClock : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-
-
-
     fun turnOffAlarm() {
-        if (isAlarmActive) {
+        if (isAlarmActive && poseRegister != "stand") {
             isAlarmActive = false
             alarmRingtone.stop()
             textViewAlarmTime.text = ""
@@ -112,12 +141,5 @@ class AlarmClock : AppCompatActivity() {
     private fun main() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-    }
-
-    fun off(){
-
-            alarmRingtone.stop()
-
-
     }
 }
