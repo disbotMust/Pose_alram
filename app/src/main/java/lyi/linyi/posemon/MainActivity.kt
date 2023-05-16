@@ -236,7 +236,6 @@ class MainActivity : AppCompatActivity() {
 
                                             ivStatus.setImageResource(R.drawable.forwardhead_confirm)
                                              */
-                                            main()
                                         } else if (forwardheadCounter > 30) {
                                             //ivStatus.setImageResource(R.drawable.forwardhead_suspect)
                                         }
@@ -437,13 +436,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun main(){
 
-        val alarmClock = AlarmClock()
-        alarmClock.off()
-        finish()
-
-    }
 
 
 
