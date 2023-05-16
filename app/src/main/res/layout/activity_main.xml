@@ -11,13 +11,27 @@
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:exported="true"/>
+        android:exported="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:exported="true">
+    <Button
+        android:id="@+id/buttonSetReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="159dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="164dp"
+        android:exported="true"
+        android:text="返回"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_sheet"
@@ -35,46 +49,46 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="21dp"
+                android:exported="true"
                 app:layout_constraintBottom_toTopOf="@+id/tvDebug"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                android:exported="true"/>
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/tvScore"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:exported="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvFps"
-                android:exported="true"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvFps" />
 
             <TextView
                 android:id="@+id/tvDebug"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:exported="true"
                 app:layout_constraintBottom_toTopOf="@+id/tvDevice"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFps"
-                android:exported="true"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvFps" />
 
             <TextView
                 android:id="@+id/tvDevice"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
+                android:exported="true"
                 android:text="@string/tfe_pe_tv_device"
                 app:layout_constraintBottom_toTopOf="@+id/tvModel"
                 app:layout_constraintEnd_toStartOf="@+id/spnDevice"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDebug"
-                android:exported="true"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvDebug" />
 
             <Spinner
                 android:id="@+id/spnDevice"
@@ -89,21 +103,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
+                android:exported="true"
                 android:text="@string/tfe_pe_tv_camera"
                 app:layout_constraintBottom_toTopOf="@+id/tvModel"
                 app:layout_constraintEnd_toStartOf="@+id/spnCamera"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDevice"
-                android:exported="true"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvDevice" />
 
             <Spinner
                 android:id="@+id/spnCamera"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
+                android:exported="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvCamera"
-                app:layout_constraintTop_toBottomOf="@+id/spnDevice"
-                android:exported="true"/>
+                app:layout_constraintTop_toBottomOf="@+id/spnDevice" />
 
             <TextView
                 android:id="@+id/tvModel"
@@ -111,11 +125,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="20dp"
+                android:exported="true"
                 android:text="@string/tfe_pe_tv_model"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCamera"
-                android:exported="true"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvCamera" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>

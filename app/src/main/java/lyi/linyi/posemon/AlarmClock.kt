@@ -1,8 +1,7 @@
 package lyi.linyi.posemon
 
-import android.app.AlertDialog
+
 import android.app.TimePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
@@ -19,13 +18,14 @@ class AlarmClock : AppCompatActivity() {
     private lateinit var textViewAlarmTime: TextView
     private lateinit var buttonSetAlarm: Button
     private lateinit var buttonTurnOffAlarm: Button
-    private lateinit var alarmRingtone: Ringtone
+    lateinit var alarmRingtone: Ringtone
     private var alarmTime: Date? = null
     private var isAlarmActive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.alarmclock)
+
 
         textViewAlarmTime = findViewById(R.id.textViewAlarmTime)
         buttonSetAlarm = findViewById(R.id.buttonSetAlarm)
@@ -57,7 +57,7 @@ class AlarmClock : AppCompatActivity() {
                 alarmTime = calendar.time
 
                 val alarmTimeFormatted =
-                    SimpleDateFormat("hh:mm a", Locale.getDefault()).format(alarmTime)
+                    SimpleDateFormat("hh:mm a", Locale.getDefault()).format(alarmTime!!)
                 textViewAlarmTime.text = alarmTimeFormatted
 
                 buttonSetAlarm.visibility = View.GONE
@@ -86,7 +86,7 @@ class AlarmClock : AppCompatActivity() {
         }
     }
 
-    private fun playAlarmSound() {
+    fun playAlarmSound() {
         try {
             val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             alarmRingtone = RingtoneManager.getRingtone(applicationContext, notification)
@@ -99,7 +99,7 @@ class AlarmClock : AppCompatActivity() {
 
 
 
-    private fun turnOffAlarm() {
+    fun turnOffAlarm() {
         if (isAlarmActive) {
             isAlarmActive = false
             alarmRingtone.stop()
@@ -112,5 +112,12 @@ class AlarmClock : AppCompatActivity() {
     private fun main() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    fun off(){
+
+            alarmRingtone.stop()
+
+
     }
 }

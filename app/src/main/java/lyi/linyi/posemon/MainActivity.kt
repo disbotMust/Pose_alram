@@ -23,6 +23,7 @@ package lyi.linyi.posemon
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -78,9 +79,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvScore: TextView
     private lateinit var spnDevice: Spinner
     private lateinit var spnCamera: Spinner
+    private lateinit var button: Button
 
     private var cameraSource: CameraSource? = null
     private var isClassifyPose = true
+
+
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -120,6 +124,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        button = findViewById(R.id.buttonSetReturn)
         /** 程序运行时保持屏幕常亮 */
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         tvScore = findViewById(R.id.tvScore)
@@ -128,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         tvDebug = findViewById(R.id.tvDebug)
 
         /** 用来显示当前坐姿状态 */
-        ivStatus = findViewById(R.id.ivStatus)
+
 
         tvFPS = findViewById(R.id.tvFps)
         spnDevice = findViewById(R.id.spnDevice)
@@ -138,7 +143,11 @@ class MainActivity : AppCompatActivity() {
         if (!isCameraPermissionGranted()) {
             requestPermission()
         }
+        button.setOnClickListener {
+            finish()
+        }
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -175,6 +184,7 @@ class MainActivity : AppCompatActivity() {
         var standardPlayerFlag = true
          */
 
+
         if (isCameraPermissionGranted()) {
             if (cameraSource == null) {
                 cameraSource =
@@ -205,13 +215,14 @@ class MainActivity : AppCompatActivity() {
                                     "sitOnTheBed" -> {
                                         crosslegCounter = 0
                                         standardCounter = 0
-                                        if (poseRegister == "sitOnTheBed") {
+                                        if (poseRegister == "forwardhead") {
                                             forwardheadCounter++
                                         }
-                                        poseRegister = "sitOnTheBed"
+                                        poseRegister = "forwardhead"
 
                                         /** 显示当前坐姿状态：坐在床上 */
                                         if (forwardheadCounter > 60) {
+
 
                                             /** 移除 本專案用不到
                                              * 播放提示音
@@ -225,21 +236,23 @@ class MainActivity : AppCompatActivity() {
 
                                             ivStatus.setImageResource(R.drawable.forwardhead_confirm)
                                              */
+                                            main()
                                         } else if (forwardheadCounter > 30) {
-                                            ivStatus.setImageResource(R.drawable.forwardhead_suspect)
+                                            //ivStatus.setImageResource(R.drawable.forwardhead_suspect)
                                         }
 
                                         /** 显示 Debug 信息 */
                                         /*tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $forwardheadCounter")*/
                                         tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${fixSortedLabels} $forwardheadCounter")
                                     }
+
                                     "sitOnThebedSide" -> {
                                         forwardheadCounter = 0
                                         standardCounter = 0
-                                        if (poseRegister == "sitOnThebedSide") {
+                                        if (poseRegister == "crossleg") {
                                             crosslegCounter++
                                         }
-                                        poseRegister = "sitOnThebedSide"
+                                        poseRegister = "crossleg"
 
                                         /** 显示当前坐姿状态：坐在床側 */
                                         if (crosslegCounter > 60) {
@@ -423,4 +436,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun main(){
+
+        val alarmClock = AlarmClock()
+        alarmClock.off()
+        finish()
+
+    }
+
+
+
 }
