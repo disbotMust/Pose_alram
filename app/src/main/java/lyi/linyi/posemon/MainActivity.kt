@@ -72,8 +72,10 @@ class MainActivity : AppCompatActivity() {
     /** 设置一个用来显示 Debug 信息的 TextView */
     private lateinit var tvDebug: TextView
 
-    /** 设置一个用来显示当前坐姿状态的 ImageView */
+    /** 註解化，本專案用不到
+     * 设置一个用来显示当前坐姿状态的 ImageView
     private lateinit var ivStatus: ImageView
+    */
 
     private lateinit var tvFPS: TextView
     private lateinit var tvScore: TextView
