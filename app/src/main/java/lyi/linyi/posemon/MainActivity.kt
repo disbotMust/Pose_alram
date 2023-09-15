@@ -23,8 +23,8 @@ package lyi.linyi.posemon
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Process
 import android.view.SurfaceView
@@ -44,6 +44,7 @@ import lyi.linyi.posemon.data.Camera
 import lyi.linyi.posemon.ml.ModelType
 import lyi.linyi.posemon.ml.MoveNet
 import lyi.linyi.posemon.ml.PoseClassifier
+import android.app.Activity
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -78,9 +79,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvScore: TextView
     private lateinit var spnDevice: Spinner
     private lateinit var spnCamera: Spinner
+    private lateinit var button: Button
 
     private var cameraSource: CameraSource? = null
     private var isClassifyPose = true
+
+
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -120,6 +124,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        button = findViewById(R.id.buttonSetReturn)
         /** 程序运行时保持屏幕常亮 */
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         tvScore = findViewById(R.id.tvScore)
@@ -128,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         tvDebug = findViewById(R.id.tvDebug)
 
         /** 用来显示当前坐姿状态 */
-        ivStatus = findViewById(R.id.ivStatus)
+
 
         tvFPS = findViewById(R.id.tvFps)
         spnDevice = findViewById(R.id.spnDevice)
@@ -138,7 +143,11 @@ class MainActivity : AppCompatActivity() {
         if (!isCameraPermissionGranted()) {
             requestPermission()
         }
+        button.setOnClickListener {
+            finish()
+        }
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -173,7 +182,8 @@ class MainActivity : AppCompatActivity() {
         var crosslegPlayerFlag = true
         var forwardheadPlayerFlag = true
         var standardPlayerFlag = true
-        */
+         */
+
 
         if (isCameraPermissionGranted()) {
             if (cameraSource == null) {
@@ -205,18 +215,20 @@ class MainActivity : AppCompatActivity() {
                                     "sitOnTheBed" -> {
                                         crosslegCounter = 0
                                         standardCounter = 0
-                                        if (poseRegister == "sitOnTheBed") {
+                                        if (poseRegister == "forwardhead") {
                                             forwardheadCounter++
                                         }
-                                        poseRegister = "sitOnTheBed"
+                                        poseRegister = "forwardhead"
 
                                         /** 显示当前坐姿状态：坐在床上 */
                                         if (forwardheadCounter > 60) {
+                                            returnToAlarmClock()
+
 
                                             /** 移除 本專案用不到
                                              * 播放提示音
                                             if (forwardheadPlayerFlag) {
-                                                forwardheadPlayer.start()
+                                            forwardheadPlayer.start()
                                             }
                                             standardPlayerFlag = true
                                             crosslegPlayerFlag = true
@@ -226,34 +238,36 @@ class MainActivity : AppCompatActivity() {
                                             ivStatus.setImageResource(R.drawable.forwardhead_confirm)
                                              */
                                         } else if (forwardheadCounter > 30) {
-                                            ivStatus.setImageResource(R.drawable.forwardhead_suspect)
+                                            //ivStatus.setImageResource(R.drawable.forwardhead_suspect)
                                         }
 
                                         /** 显示 Debug 信息 */
                                         /*tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${sortedLabels[0].first} $forwardheadCounter")*/
                                         tvDebug.text = getString(R.string.tfe_pe_tv_debug, "${fixSortedLabels} $forwardheadCounter")
                                     }
+
                                     "sitOnThebedSide" -> {
                                         forwardheadCounter = 0
                                         standardCounter = 0
-                                        if (poseRegister == "sitOnThebedSide") {
+                                        if (poseRegister == "crossleg") {
                                             crosslegCounter++
                                         }
-                                        poseRegister = "sitOnThebedSide"
+                                        poseRegister = "crossleg"
 
                                         /** 显示当前坐姿状态：坐在床側 */
                                         if (crosslegCounter > 60) {
+                                            returnToAlarmClock()
 
                                             /** 移除 本專案用不到
                                              * 播放提示音
                                             if (crosslegPlayerFlag) {
-                                                crosslegPlayer.start()
+                                            crosslegPlayer.start()
                                             }
                                             standardPlayerFlag = true
                                             crosslegPlayerFlag = false
                                             forwardheadPlayerFlag = true
                                             ivStatus.setImageResource(R.drawable.crossleg_confirm)
-                                            */
+                                             */
                                         } else if (crosslegCounter > 30) {
                                             /* 移除 本專案用不到 */
                                             /*ivStatus.setImageResource(R.drawable.crossleg_suspect)*/
@@ -273,11 +287,12 @@ class MainActivity : AppCompatActivity() {
 
                                         /** 显示当前坐姿状态：站立 */
                                         if (standardCounter > 30) {
+                                            returnToAlarmClock()
 
                                             /** 移除 本專案用不到
                                              * 播放提示音：坐姿标准
                                             if (standardPlayerFlag) {
-                                                standardPlayer.start()
+                                            standardPlayer.start()
                                             }
                                             standardPlayerFlag = false
                                             crosslegPlayerFlag = true
@@ -298,20 +313,24 @@ class MainActivity : AppCompatActivity() {
                             }
                             else {
                                 if (poseRegister == "sleeping")
-                                    /** 显示 Debug 信息 */
+
+                                /** 显示 Debug 信息 */
                                     tvDebug.text = getString(R.string.tfe_pe_tv_debug, "還在睡 沒動靜")
                                 else {
                                     missingCounter++
                                     if (missingCounter > 30) {
+
                                         /** 移除 本專案用不到
                                         ivStatus.setImageResource(R.drawable.no_target)*/
                                     }
+
                                     /** 显示 Debug 信息 */
                                     tvDebug.text = getString(R.string.tfe_pe_tv_debug, "missing $missingCounter")
+
                                 }
 
 
-                                
+
                             }
                         }
                     }).apply {
@@ -423,4 +442,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**以下 by 柏樺 */
+    @Suppress("DEPRECATION")
+    private fun returnToAlarmClock() {
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    /** 還有第225 259 290行 */
 }
